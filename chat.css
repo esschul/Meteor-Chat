@@ -1,0 +1,52 @@
+/* CSS declarations go here */
+
+input {
+	display:block;
+	height:30px;
+	font-size:20px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+button { font-size: 15px;}
+
+h1{
+	margin-bottom: 10px;
+}
+
+#loading{display:none;}
+
+.container {
+	margin-top:30px;
+	padding-bottom:20px;
+}
+
+.num-connections{
+	display: inline-block;
+}
+.num-connections:before{
+	content:' Akkurat nå ser det ut til at vi har ';
+}
+
+.num-connections:after{
+	content:' besøkende.';
+}
+
+.input-name{display:block;width:175px;}
+.input-msg{display:inline-block;width:600px;margin-bottom: 20px;}
+
+.message{font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;font-size: 20px;}
+.message .time{ display:inline-block; color:gray; min-width:60px; padding-right: 5px; border-right:1px #ddd solid; }
+.message .name{ display:inline-block; color:gray; min-width:170px; padding-right: 5px; border-right:1px #ddd solid;}
+
+div.message:nth-child(2n+1){background-color:#f2f2f2;}
+
+
+@media screen and (max-width:700px) {
+	.input-msg{width:90%;}
+	p{width:90%;}
+	.message{font-size: 18px;padding:10px;}
+	.message .time {width:26%;border-bottom:1px #ddd solid;padding-bottom:5px;}
+	.message .name {width:67%;border-right:none;border-bottom:1px #ddd solid;padding-bottom:5px;}
+	.message .text {display:block;width:100%;margin-right: 10px;padding-top:10px;}
+}

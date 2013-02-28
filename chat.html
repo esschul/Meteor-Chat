@@ -1,0 +1,29 @@
+<head>
+  <title>Magisk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes"/>
+</head>
+
+<body>
+  {{> chat}}
+</body>
+
+<template name="chat">
+  <p>Beskjeder vises i real time. Når du trykker på enter commiter du meldingen. <span class="num-connections">1</span></p>
+  <p>Trykk enter for ny melding.</p>
+  <input class="input-name" type="text" placeholder="Navn" value=""/>
+  <input class="input-msg"type="text" placeholder="Beskjed" value=""/>
+  <div class="container">
+   {{#each messages}}
+      {{> message}}
+    {{/each}}
+   </div>
+</template>
+
+<template name="message">
+  <div class="message">
+    <span class="time">{{time}}&nbsp;</span>
+    <span class="name">{{name}}</span>
+    <span class="text">{{{msgtxt}}}</span>
+  </div>
+</template>
+
