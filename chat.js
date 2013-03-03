@@ -3,9 +3,25 @@ Messages = new Meteor.Collection("messages");
 Connections = new Meteor.Collection("connections");
 
 if (Meteor.isClient) {
-  Meteor.startup(function(){
+ var favIconStatus = 0;
+ function changeFavicon(){
+    if(document.getElementsByTagName('link').length > 1){
+       document.getElementsByTagName('head')[0].removeChild(document.getElementsByTagName('link')[1]);
+    } 
+    var link = document.createElement('link');
+    link.type = 'image/x-icon';
+    link.rel = 'shortcut icon';
+     if(favIconStatus===0){ // default icon.
+      link.href = 'favicon.ico';    
+     } else if(favIconStatus===1){ // Someone talked.
+       link.href = 'favicon-talked.ico'; 
+     } else if(favIconStatus===2){ // Someone talked and mentioned you.
+        link.href = 'favicon-talked-about-you.ico'; 
+     }
+    document.getElementsByTagName('head')[0].appendChild(link);
+  }
 
-  });
+
   function replaceURLWithHTMLLinks(text){
         var exp = /((\b(https?|ftp|file):\/\/|www)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
         text = text.replace(exp,"<a href='$1' target='_new'>$1</a>"); 
@@ -24,21 +40,48 @@ if (Meteor.isClient) {
   var counter;
   var onblurCount;
   window.onblur = function(event){
-    console.log("Here we go");
     onblurCount = Messages.find({}).count();
     counter = window.setInterval(function () {
-      if(onblurCount !== undefined && (Messages.find({}).count() - onblurCount) > 0){
-        var howMuch = Messages.find({}).count() - onblurCount;
-        window.document.title = "Magisk ("+howMuch+")";  
+      var nowCount = Messages.find({}).count();
+      if(onblurCount !== undefined && (nowCount - onblurCount) > 0){
+        var howMuch = nowCount - onblurCount;
+        window.document.title = "Magisk ("+howMuch+")";          
+          if(favIconStatus !== 2){
+            var nick = document.getElementsByClassName('input-name')[0].value.trim().toLowerCase();
+            var talkedAboutYou = false;
+            if(favIconStatus !== 2){
+              Messages.find({},{sort: {date_created: -1},limit:howMuch}).forEach(
+                function(msg){
+                  if(msg.msgtxt.toLowerCase().indexOf(nick) !==-1){
+                    console.log(msg.msgtxt.toLowerCase());
+                    console.log(nick);
+                    talkedAboutYou = true;
+                  }
+              });
+            }
+            if(talkedAboutYou){
+              favIconStatus = 2;
+              changeFavicon(); 
+            }
+          }
+          
+          if(favIconStatus === 0){
+            favIconStatus = 1;
+            changeFavicon(); 
+          }
       }
     }, 5000);
   }
 
   window.onmousemove = function(event){
+    if(counter !== undefined){
     window.clearInterval(counter);
     window.document.title = "Magisk";  
+    favIconStatus=0;
+    changeFavicon();
     counter = undefined;
     onblurCount= undefined;
+    }
   }
 
     
@@ -65,17 +108,19 @@ if (Meteor.isClient) {
       if(event.keyCode == 13){
         var msg = Messages.findOne(Session.get("current_id"));
         if(msg !== undefined ){
-           var hours = date.getHours();
-           if (hours < 10){
-            hours = '0' + hours;
-           } 
-           var minutes = date.getMinutes();
-           if (minutes < 10){
-            minutes = '0' + minutes;
-           } 
-           var time = ""+hours+":"+minutes;
-           v = replaceURLWithHTMLLinks(v);
-          Messages.update(Session.get("current_id"),{name:n, msgtxt: v, date_created:dc, time:time});
+           v=replaceURLWithHTMLLinks(v);
+           if(n.length < 300 && v.length < 1000 && v.search(/<(script|object|applet|embbed|frameset|iframe|form|textarea|input|button)/) === -1){
+             var hours = date.getHours();
+             if (hours < 10){
+              hours = '0' + hours;
+             } 
+             var minutes = date.getMinutes();
+             if (minutes < 10){
+              minutes = '0' + minutes;
+             } 
+             var time = ""+hours+":"+minutes;
+            Messages.update(Session.get("current_id"),{name:n, msgtxt: v, date_created:dc, time:time});
+          }
         }
         document.getElementsByClassName('input-msg')[0].value = '';
         Session.set("current_id","");
@@ -85,15 +130,14 @@ if (Meteor.isClient) {
             Session.set("current_id",id);
         } else {
               var msg = Messages.findOne(Session.get("current_id"));
-              if(msg !== undefined ){
+              if(msg !== undefined && n.length < 300 && v.length < 1000 && v.search(/<(script|object|applet|embbed|frameset|iframe|form|textarea|input|button)/) === -1){
                   Messages.update(Session.get("current_id"),{name:n, msgtxt: v, date_created: msg.date_created});
-              } else {
-               if(v.trim() !== ''){
+              } else if(msg !== undefined) {
+                Messages.remove(Session.get("current_id"));
+              } else if(v.trim() !== '' && n.length < 300 && v.length < 1000 && v.search(/<(script|object|applet|embbed|frameset|iframe|form|textarea|input|button)/) === -1){
                var id = Messages.insert({name:n, msgtxt: v, date_created : dc});
                Session.set("current_id",id);
-               }
               }
-            
         }
       }
     }
@@ -124,7 +168,7 @@ if (Meteor.isServer) {
   // server code : clean up old messages.
   Meteor.setInterval(function () {
     var now = (new Date()).getTime();
-    Messages.remove({date_created: {$t: (now - (30 * 60 * 60 * 1000))}});
+    Messages.remove({date_created: {$lt: (now - (30 * 60 * 60 * 1000))}});
   }, (60 * 60 * 1000));
 
 }
