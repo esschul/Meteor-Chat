@@ -45,9 +45,9 @@ if (Meteor.isClient) {
       var nowCount = Messages.find({}).count();
       if(onblurCount !== undefined && (nowCount - onblurCount) > 0){
         var howMuch = nowCount - onblurCount;
+        var nick = document.getElementsByClassName('input-name')[0].value.trim().toLowerCase();
         window.document.title = "Magisk ("+howMuch+")";          
-          if(favIconStatus !== 2){
-            var nick = document.getElementsByClassName('input-name')[0].value.trim().toLowerCase();
+          if(nick.length > 0 && favIconStatus !== 2){
             var talkedAboutYou = false;
             if(favIconStatus !== 2){
               Messages.find({},{sort: {date_created: -1},limit:howMuch}).forEach(
