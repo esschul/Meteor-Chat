@@ -1,6 +1,7 @@
 <head>
   <title>Magisk</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes"/>
+  <link rel="apple-touch-icon-precomposed" href="iphone-icon.png"/>
   <link type="image/x-icon" href="favicon.ico">
 </head>
 
@@ -10,9 +11,9 @@
 
 <template name="chat">
   <p>Beskjeder vises i real time. Når du trykker på enter commiter du meldingen. <span class="num-connections">1</span></p>
-  <p>Trykk enter for ny melding.</p>
   <input class="input-name" type="text" placeholder="Navn" value=""/>
   <input class="input-msg"type="text" placeholder="Beskjed" value=""/>
+  <p><span class="connections"></span></p>
   <div class="container">
    {{#each messages}}
       {{> message}}
@@ -22,9 +23,9 @@
 
 <template name="message">
   <div class="message">
-    <span class="time">{{time}}&nbsp;</span>
-    <span class="name">{{name}}</span>
-    <span class="text">{{{msgtxt}}}</span>
+    <div class="time border-right">{{time}}&nbsp;</div>
+    <div class="name border-right">{{name}}</div>
+    <div class="text">{{{msgtxt}}}</div>
   </div>
 </template>
 

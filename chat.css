@@ -17,8 +17,16 @@ h1{
 #loading{display:none;}
 
 .container {
+	display: table;
+	width: 100%;
 	margin-top:30px;
 	padding-bottom:20px;
+}
+
+.connections{
+	font-style: italic;
+	display:block;
+	height:10px;
 }
 
 .num-connections{
@@ -32,12 +40,17 @@ h1{
 	content:' besøkende.';
 }
 
-.input-name{display:block;width:175px;}
-.input-msg{display:inline-block;width:600px;margin-bottom: 20px;}
 
-.message{font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;font-size: 20px;}
-.message .time{ display:inline-block; color:gray; min-width:60px; padding-right: 5px; border-right:1px #ddd solid; }
-.message .name{ display:inline-block; color:gray; min-width:170px; padding-right: 5px; border-right:1px #ddd solid;}
+.input-name{display:block;width:175px;}
+.input-msg{display:inline-block;width:600px;margin-bottom: 5px;}
+
+.border-right {border-right:1px #ddd solid;}
+
+.message{display:table-row;font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;font-size: 20px;}
+.message .time{ display:table-cell; padding:10px; width:55px; padding-left:5px; color:gray; }
+.message .name{ display:table-cell; padding:10px; color:gray;}
+.message .text{ display:table-cell; padding:10px;}
+
 
 div.message:nth-child(2n+1){background-color:#f2f2f2;}
 
@@ -46,7 +59,10 @@ div.message:nth-child(2n+1){background-color:#f2f2f2;}
 	.input-msg{width:90%;}
 	p{width:90%;}
 	.message{font-size: 18px;padding:10px;}
-	.message .time {width:26%;border-bottom:1px #ddd solid;padding-bottom:5px;}
-	.message .name {width:67%;border-right:none;border-bottom:1px #ddd solid;padding-bottom:5px;}
-	.message .text {display:block;width:100%;margin-right: 10px;padding-top:10px;}
+
+	.container{display:block;}
+	.message{display:block;border-radius: 15px;}
+	.message .time {display:inline-block;border-right:none;;width:30px;text-align:left;font-size: 14px;}
+	.message .name {display:inline-block;width:45%;border-right:none;font-size: 14px;}
+	.message .text {display:block;}
 }

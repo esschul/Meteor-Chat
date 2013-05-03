@@ -1,12 +1,34 @@
 Messages = new Meteor.Collection("messages");
 //Tags = new Meteor.Collection("tags");
 Connections = new Meteor.Collection("connections");
+Commands = new Meteor.Collection("commands");
 
 if (Meteor.isClient) {
+
+ Meteor.startup(function () {
+    if (document.cookie !== undefined) {
+      var cookieName = readCookie('magisknavn');
+      if(cookieName !== null){
+        document.getElementsByClassName('input-name')[0].value = cookieName;
+      }
+    }
+  });
+
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
  var favIconStatus = 0;
  function changeFavicon(){
-    if(document.getElementsByTagName('link').length > 1){
-       document.getElementsByTagName('head')[0].removeChild(document.getElementsByTagName('link')[1]);
+    if(document.getElementsByTagName('link').length > 2){
+       document.getElementsByTagName('head')[0].removeChild(document.getElementsByTagName('link')[2]);
     } 
     var link = document.createElement('link');
     link.type = 'image/x-icon';
@@ -24,16 +46,17 @@ if (Meteor.isClient) {
 
   function replaceURLWithHTMLLinks(text){
         var exp = /((\b(https?|ftp|file):\/\/|www)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-        text = text.replace(exp,"<a href='$1' target='_new'>$1</a>"); 
         if(text.indexOf("www") !== -1 && text.indexOf("http") === -1){
             text = text.replace('www',"http://www"); 
         } 
+        text = text.replace(exp,"<a href='$1' target='_new'>$1</a>");     
+        
         return text;
   }
 
   Session.set("current_id","")
   if(Session.get("user_id") === undefined){
-    var user_id = Connections.insert({last_seen: (new Date()).getTime()});;
+    var user_id = Connections.insert({name:'',last_seen: (new Date()).getTime()});;
     Session.set("user_id",user_id);
   }
 
@@ -75,19 +98,25 @@ if (Meteor.isClient) {
 
   window.onmousemove = function(event){
     if(counter !== undefined){
-    window.clearInterval(counter);
-    window.document.title = "Magisk";  
-    favIconStatus=0;
-    changeFavicon();
-    counter = undefined;
-    onblurCount= undefined;
+      window.clearInterval(counter);
+      window.document.title = "Magisk";  
+      favIconStatus=0;
+      changeFavicon();
+      counter = undefined;
+      onblurCount= undefined;
     }
   }
 
     
   Meteor.setInterval(function () {
-    Meteor.call('keepalive', Session.get('user_id'));
+    Meteor.call('keepalive', Session.get('user_id'),document.getElementsByClassName('input-name')[0].value.trim());
     document.getElementsByClassName('num-connections')[0].innerHTML = Connections.find({}).count();
+    var users = "";
+    Connections.find({}).forEach(function(conn){console.log(conn.name);users += conn.name + " "});
+    
+    if(users.trim() !== ''){
+      document.getElementsByClassName('connections')[0].innerHTML = 'Happy campers: ' + users;
+    }
   }, 10000);
 
  
@@ -96,7 +125,10 @@ if (Meteor.isClient) {
   };
 
   Template.chat.events({
-    'keyup input' : function (event) {
+    'blur input.input-name' : function (event) {
+        document.cookie ='magisknavn='+document.getElementsByClassName('input-name')[0].value+'; expires=Tue, 31 Dec 2013 20:00:00 UTC; path=/'
+    },
+    'keyup input.input-msg' : function (event) {
       if(counter !== undefined){
           window.clearInterval(counter);
           window.document.title = "Magisk";  
@@ -108,8 +140,9 @@ if (Meteor.isClient) {
       if(event.keyCode == 13){
         var msg = Messages.findOne(Session.get("current_id"));
         if(msg !== undefined ){
-           v=replaceURLWithHTMLLinks(v);
+            
            if(n.length < 300 && v.length < 1000 && v.search(/<(script|object|applet|embbed|frameset|iframe|form|textarea|input|button)/) === -1){
+            v=replaceURLWithHTMLLinks(v);
              var hours = date.getHours();
              if (hours < 10){
               hours = '0' + hours;
@@ -126,8 +159,8 @@ if (Meteor.isClient) {
         Session.set("current_id","");
       } else {
         if(document.getElementsByClassName('input-msg')[0].value.trim().length == 1 && Session.get("current_id").length == 0){
-            var id = Messages.insert({name:n, msgtxt: v, date_created : dc});
-            Session.set("current_id",id);
+              var id = Messages.insert({name:n, msgtxt: v, date_created : dc});
+              Session.set("current_id",id);
         } else {
               var msg = Messages.findOne(Session.get("current_id"));
               if(msg !== undefined && n.length < 300 && v.length < 1000 && v.search(/<(script|object|applet|embbed|frameset|iframe|form|textarea|input|button)/) === -1){
@@ -139,13 +172,9 @@ if (Meteor.isClient) {
                Session.set("current_id",id);
               }
         }
+
       }
     }
-    //, 'keyup input.tags' : function(event){
-    //    if(document.getElementsByClassName('tags') !== undefined && document.getElementsByClassName('tags')[0].value.trim().length > 2){
-    //      document.getElementsByClassName('tags')[0].value
-    //    }
-    //}
 
   });
 }
@@ -155,8 +184,8 @@ if (Meteor.isServer) {
   });
 
   Meteor.methods({
-    keepalive: function (user_id) {
-        Connections.update(user_id, {$set: {last_seen: (new Date()).getTime()}});
+    keepalive: function (user_id,nick) {
+        Connections.update(user_id, {$set: {name:nick,last_seen: (new Date()).getTime()}});
     }
   });
 
