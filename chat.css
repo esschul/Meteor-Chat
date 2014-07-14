@@ -1,36 +1,85 @@
 /* CSS declarations go here */
+body {
+	background: #fff;
+	color:rgb(22,22,29);
+	font-family: Verdana;
+}
+
+div.message:nth-child(2n+1){background-color:#f2f3f4}
+
+.input-name{display:inline-block;}
+.input-msg{display:inline-block;width:600px;margin-bottom:20px;margin-left: 2px;}
 
 input {
 	display:block;
 	height:30px;
-	font-size:20px;
-	margin-top: 3px;
-	margin-bottom: 3px;
+	font-size:14px;
+	margin-top:3px;
+	margin-bottom:3px;
 }
 
-button { font-size: 15px;}
 
 h1{
-	margin-bottom: 10px;
+	margin-bottom:10px;
+}
+
+.highlight {
+	 background-color: #AD310B;
+     -webkit-transition: background-color 2000ms linear;
+     -moz-transition: background-color 2000ms linear;
+     -o-transition: background-color 2000ms linear;
+     -ms-transition: background-color 2000ms linear;
+     transition: background-color 2000ms linear;
+	color:#000;
+	background-color: #93BAFF !important;
+}
+
+.message.highlight .time {
+	color: #000;
+}
+
+.message.highlight .name {
+	color: #000;
+}
+
+.message img {
+	max-width: 500px;
+}
+
+
+.chatinfo{
+	float:left;
+	width:600px;
+}
+.map{
+	float:right;
+}
+
+input.geopos-btn {
+	display: none;
+	height: 32px;
+	width: 32px;
+	background: transparent url('geopos.png');
+	background-size: contain;
 }
 
 #loading{display:none;}
 
 .container {
-	display: table;
-	width: 100%;
-	margin-top:30px;
+	display:table;
+	width:100%;
 	padding-bottom:20px;
+	font-size:14px;
 }
 
 .connections{
-	font-style: italic;
 	display:block;
-	height:10px;
+	margin-left: 5px;
+	margin-top: 10px;
 }
 
 .num-connections{
-	display: inline-block;
+	display:inline-block;
 }
 .num-connections:before{
 	content:' Akkurat nå ser det ut til at vi har ';
@@ -41,28 +90,134 @@ h1{
 }
 
 
-.input-name{display:block;width:175px;}
-.input-msg{display:inline-block;width:600px;margin-bottom: 5px;}
+.input-email{display:none;}
+
 
 .border-right {border-right:1px #ddd solid;}
 
-.message{display:table-row;font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;font-size: 20px;}
+.message{display:table-row;;font-size:14px;}
 .message .time{ display:table-cell; padding:10px; width:55px; padding-left:5px; color:gray; }
-.message .name{ display:table-cell; padding:10px; color:gray;}
+.message .name{ display:table-cell; width:120px;padding:10px; color:gray;}
 .message .text{ display:table-cell; padding:10px;}
 
 
-div.message:nth-child(2n+1){background-color:#f2f2f2;}
+@media screen and (max-width:1300px) {
+	.map{display:none;}
+}
 
-
-@media screen and (max-width:700px) {
+@media screen and (max-width:500px) {
 	.input-msg{width:90%;}
 	p{width:90%;}
-	.message{font-size: 18px;padding:10px;}
-
-	.container{display:block;}
-	.message{display:block;border-radius: 15px;}
-	.message .time {display:inline-block;border-right:none;;width:30px;text-align:left;font-size: 14px;}
-	.message .name {display:inline-block;width:45%;border-right:none;font-size: 14px;}
+	.chatinfo{width:auto;}
+	.message{font-size:14px;padding:10px;border-radius:15px;}
+	.message{display:block;}
+	.message .time {display:inline-block;border-right:none;;width:auto;text-align:left;font-size:14px;}
+	.message .name {display:inline-block;width:45%;border-right:none;font-size:14px;}
 	.message .text {display:block;}
 }
+
+
+span.smiley {
+	display:inline-block;
+	height: 20px;
+	width:20px;
+}
+
+span.smiley.smiley_1 { /* :) */
+	background:url('smileys.png') -5px -5px;
+}
+span.smiley.smiley_2 { /* :( */
+	background:url('smileys.png') -32px -5px;
+}
+span.smiley.smiley_3 { /* :P */
+	background:url('smileys.png') -50px -5px;
+}
+span.smiley.smiley_4 { /* :P */
+	background:url('smileys.png') -75px -5px;
+}
+span.smiley.smiley_5 { /* :P */
+	background:url('smileys.png') -100px -5px;
+}
+span.smiley.smiley_6 { /* :P */
+	background:url('smileys.png') -123px -5px;
+}
+span.smiley.smiley_7 { /* :P */
+	background:url('smileys.png') -145px -5px;
+}
+span.smiley.smiley_8 { /* :P */
+	background:url('smileys.png') -168px -5px;
+}
+span.smiley.smiley_9 { /* :P */
+	background:url('smileys.png') -192px -5px;
+}
+span.smiley.smiley_10 { /* :P */
+	background:url('smileys.png') -215px -5px;
+}
+span.smiley.smiley_11 { /* :P */
+	background:url('smileys.png') -237px -5px;
+}
+span.smiley.smiley_12 { /* :P */
+	background:url('smileys.png') -262px -5px;
+}
+span.smiley.smiley_13 { /* :) */
+	background:url('smileys.png') -285px -5px;
+}
+span.smiley.smiley_14 { /* :( */
+	background:url('smileys.png') -320px -5px;
+}
+span.smiley.smiley_15 { /* :P */
+	background:url('smileys.png') -347px -5px;
+}
+span.smiley.smiley_16 { /* :P */
+	background:url('smileys.png') -370px -5px;
+}
+span.smiley.smiley_17 { /* :P */
+	background:url('smileys.png') -395px -5px;
+}
+span.smiley.smiley_18 { /* :P */
+	background:url('smileys.png') -418px -5px;
+}
+span.smiley.smiley_19 { /* :P */
+	background:url('smileys.png') -445px -5px;
+}
+span.smiley.smiley_20 { /* :P */
+	background:url('smileys.png') -468px -5px;
+}
+span.smiley.smiley_21 { /* :P */
+	background:url('smileys.png') -495px -5px;
+}
+span.smiley.smiley_22 { /* :P */
+	background:url('smileys.png') -520px -5px;
+}
+span.smiley.smiley_23 { /* :P */
+	background:url('smileys.png') -542px -5px;
+}
+span.smiley.smiley_24 { /* :P */
+	background:url('smileys.png') -567px -5px;
+}
+span.smiley.smiley_25 { /* :P */
+	background:url('smileys.png') -592px -5px;
+}
+span.smiley.smiley_26 { /* :P */
+	background:url('smileys.png') -653px -5px;
+}
+span.smiley.andreas { /* :P */
+	background:url('andreas.png');
+}
+span.smiley.marius { /* :P */
+	background:url('marius.png');
+}
+span.smiley.espen { /* :P */
+	background:url('espen.png');
+}
+span.smiley.bolle { /* :P */
+	background:url('bolle.png');
+}
+span.smiley.ballong { /* :P */
+	background:url('ballong.png');
+}
+
+
+
+
+

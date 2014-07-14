@@ -10,22 +10,31 @@
 </body>
 
 <template name="chat">
-  <p>Beskjeder vises i real time. Når du trykker på enter commiter du meldingen. <span class="num-connections">1</span></p>
-  <input class="input-name" type="text" placeholder="Navn" value=""/>
-  <input class="input-msg"type="text" placeholder="Beskjed" value=""/>
-  <p><span class="connections"></span></p>
+  <div class="container">
+    <div class="chatinfo">
+    <input class="input-name" type="text" placeholder="Navn" value=""/>
+    <input class="input-msg" type="text" placeholder="Beskjed" value=""/>
+    <span class="connections"></span>
+    </div>
+    <div class="map">
+      <img src="smileys.png" alt="smileys"/>
+    </div>
+  </div>
+
   <div class="container">
    {{#each messages}}
       {{> message}}
     {{/each}}
-   </div>
+  </div>
+
+
 </template>
 
 <template name="message">
   <div class="message">
-    <div class="time border-right">{{time}}&nbsp;</div>
-    <div class="name border-right">{{name}}</div>
-    <div class="text">{{{msgtxt}}}</div>
+    <span class="time">{{time}}&nbsp;</span>
+    <span class="name">{{name}}</span>
+    <span class="text">{{{msgtxt}}}</span>
   </div>
 </template>
 

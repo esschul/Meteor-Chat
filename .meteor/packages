@@ -5,5 +5,5 @@
 
 autopublish
 insecure
-preserve-inputs
 http
+standard-app-packages
