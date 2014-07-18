@@ -201,6 +201,13 @@ span.smiley.smiley_25 { /* :P */
 span.smiley.smiley_26 { /* :P */
 	background:url('smileys.png') -653px -5px;
 }
+
+span.smiley.smiley_27 { /* :P */
+	background:url('facebook-like.png');
+	background-size: contain;
+}
+
+
 span.smiley.andreas { /* :P */
 	background:url('andreas.png');
 }

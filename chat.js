@@ -136,6 +136,8 @@ function replaceURLWithYoutube(text){
         if(text.indexOf(':|]') !== -1) {text = text.replace(':|]','<span class="smiley smiley_24">&nbsp;</span>')}; 
         if(text.indexOf(':putnam:') !== -1) {text = text.replace(':putnam:','<span class="smiley smiley_25">&nbsp;</span>')}; 
         if(text.indexOf(':42:') !== -1) {text = text.replace(':42:','<span class="smiley smiley_26">&nbsp;</span>')}; 
+        if(text.indexOf('(y)') !== -1) {text = text.replace('(y)','<span class="smiley smiley_27">&nbsp;</span>')}; 
+
 
         if(text.toLowerCase().indexOf('andreas') !== -1) {text = text.replace(/[Aa]ndreas/g,'<span class="smiley andreas">&nbsp;</span>')}; 
         if(text.toLowerCase().indexOf('marius') !== -1) {text = text.replace(/[Mm]arius/g,'<span class="smiley marius">&nbsp;</span>')}; 
